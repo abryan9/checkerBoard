@@ -1,5 +1,5 @@
 import tkinter as tk
-# from tkinter import ttk
+from tkinter import ttk
 
 class App(tk.Frame):
     def __init__(self, master):
@@ -11,6 +11,7 @@ class App(tk.Frame):
         
         self.contents = tk.StringVar()
         self.contents.set("This is a variable")
+        # self.contents.append("This is another variable")
         self.everythingy["textvariable"] = self.contents
         
         self.everythingy.bind('<Key-Return>', self.print_contents)
@@ -22,8 +23,8 @@ class App(tk.Frame):
 
 root = tk.Tk()
 myapp = App(root)
-# frm = tk.Frame(myapp, padding=10)
-# frm.grid()
-# tk.Label(frm, text="Hello World!").grid(column=0, row=0)
-# tk.Button(frm, text="Quit", command=root.destroy).grid(column=0, row=1)
+frm = ttk.Frame(myapp, padding=10)
+frm.grid()
+ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
+ttk.Button(frm, text="Quit", command=root.destroy).grid(column=0, row=1)
 myapp.mainloop()
