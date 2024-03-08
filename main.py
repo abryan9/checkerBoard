@@ -1,14 +1,19 @@
 import tkinter as tk
 from tkinter import ttk
 
+import zoneConfig as zc
+
 class CheckerBoard(tk.Frame):
     def __init__(self, master):
         super().__init__(master)
-        # self.label = tk.Label(self, text = " _|_ ")
-        # self.label.pack()
         
-        self.zones = ["No Zone Selected", "All Zones", "Zone 1", "Zone 2", "Zone 3", "Zone 4"]
+        self.zones = ["All Zones", "Zone 1", "Zone 2", "Zone 3", "Zone 4", "No Zone Selected"]
         self.zone = tk.StringVar()
+        self.selectedZoneList = []
+        
+        self.scroll = tk.Scrollbar(self)
+        self.scroll.pack(side=tk.RIGHT, fill=tk.Y)
+        self.listRooms = tk.Listbox(self, selectmode=tk.SINGLE, yscrollcommand=self.scroll.set)
         
         self.pack()
    
@@ -19,6 +24,7 @@ class CheckerBoard(tk.Frame):
         dropdown = tk.OptionMenu(self, self.zone, *self.zones, command=self.show_rooms)
         dropdown.pack()
         
+        
         pass
 
 
@@ -28,17 +34,28 @@ class CheckerBoard(tk.Frame):
         
         
     def show_rooms(self, zone):
-        zoneDict = {
-            "No Zone Selected": [], 
-            "All Zones": ["1", "2", "3", "4"], 
-            "Zone 1": ["1"],
-            "Zone 2": ["2"],
-            "Zone 3": ["3"],
-            "Zone 4": ["4"],
+        zoneDict = { 
+            "All Zones": self.populate_zone(0), 
+            "Zone 1": self.populate_zone(1),
+            "Zone 2": self.populate_zone(2),
+            "Zone 3": self.populate_zone(3),
+            "Zone 4": self.populate_zone(4),
+            "No Zone Selected": self.populate_zone(5),
         }
         
         print(zoneDict[zone])
+        self.listRooms.delete(0, self.listRooms.size())
+        self.listRooms.insert(0, *zoneDict[zone])
+        self.listRooms.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.scroll.config(command=self.listRooms.yview)
         pass
+        
+    
+    def populate_zone(self, zoneNum):
+    
+        self.selectedZoneList = zc.configure_zone(zoneNum)
+            
+        return self.selectedZoneList
     
     
     
@@ -53,7 +70,6 @@ frm = ttk.Frame(checkerBoard, padding=10)
 frm.pack()
 
 checkerBoard.select_zone()
-# checkerBoard.show_rooms()
 
-# ttk.Button(root, text="Quit", command=root.destroy).pack()
+ttk.Button(root, text="Quit", command=root.destroy).pack()
 checkerBoard.mainloop()
