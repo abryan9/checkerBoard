@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+import time
+
 import zoneConfig as zc
 
 class CheckerBoard(tk.Frame):
@@ -14,6 +16,10 @@ class CheckerBoard(tk.Frame):
         self.scroll = tk.Scrollbar(self)
         self.scroll.pack(side=tk.RIGHT, fill=tk.Y)
         self.listRooms = tk.Listbox(self, selectmode=tk.SINGLE, yscrollcommand=self.scroll.set)
+        
+        self.ABS_PATH = __file__.removesuffix('main.py')
+        
+        self.zone_config = zc.zone_config()
         
         self.pack()
    
@@ -53,7 +59,7 @@ class CheckerBoard(tk.Frame):
     
     def populate_zone(self, zoneNum):
     
-        self.selectedZoneList = zc.configure_zone(zoneNum)
+        self.selectedZoneList = self.zone_config.get_zone(zoneNum)
             
         return self.selectedZoneList
     
