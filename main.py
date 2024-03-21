@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, font
 
 import time
 
@@ -16,7 +16,7 @@ class CheckerBoard(tk.Frame):
         
         self.select_zone()
         
-        tk.Label(frame, text='test').pack(side=tk.TOP, fill=tk.X, anchor=tk.N, expand=0)
+        tk.Label(frame, text='test').pack(side=tk.TOP, anchor=tk.W, expand=0)
         
         self.yscroll = tk.Scrollbar(frame)
         self.yscroll.pack(side=tk.LEFT, anchor=tk.E, fill=tk.Y, pady=(0,25))
@@ -31,7 +31,7 @@ class CheckerBoard(tk.Frame):
         
         tk.Button(frame, text='Quit', command=root.destroy).pack(side=tk.RIGHT, anchor=tk.E, padx=(1,0))
         tk.Button(frame, text='Save').pack(side=tk.RIGHT, anchor=tk.E, padx=(1,0))
-        tk.Button(frame, text='Refresh').pack(side=tk.RIGHT, anchor=tk.E, padx=(1,0))
+        tk.Button(frame, text='Refresh', command=self.get_zone_list).pack(side=tk.RIGHT, anchor=tk.E, padx=(1,0))
         
         frame.pack(fill='both', padx=10, pady=10, expand=1)
    
@@ -51,10 +51,10 @@ class CheckerBoard(tk.Frame):
         pass
     
     
-    def get_zone_list(self, zone):
+    def get_zone_list(self, zone='No Zone Selected'):
         
         if zone[:2] != 'No':
-            if zone == 'All Zones':
+            if str(self.zone) == 'All Zones':
                 zoneNum = 0
             else:
                 zoneNum = int(zone[-1])
@@ -74,7 +74,8 @@ class CheckerBoard(tk.Frame):
 
 root = tk.Tk()
 root.title('CheckerBoard')
-root.geometry('500x300')
+root.geometry('500x350')
+root.option_add('*Font', 'consolas 12')
 
 checkerBoard = CheckerBoard(root)
 
