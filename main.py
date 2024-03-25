@@ -14,8 +14,10 @@ class CheckerBoard(tk.Frame):
         
         self.zones = ["All Zones", "Zone 1", "Zone 2", "Zone 3", "Zone 4", "No Zone Selected"]
         self.zone = tk.StringVar()
+        self.zone.set('No Zone Selected')
         
         self.select_zone()
+        self.zone_config = zc.zone_config()
         
         currentTime = datetime.now()
         currentDelta = timedelta(hours=currentTime.hour, minutes=currentTime.minute, seconds=int(currentTime.second))
@@ -27,35 +29,39 @@ class CheckerBoard(tk.Frame):
         
         self.yscroll = tk.Scrollbar(frame)
         self.yscroll.pack(side=tk.LEFT, anchor=tk.W, fill=tk.BOTH, pady=(0,40))
-        self.listRooms = tk.Listbox(frame, height=15, yscrollcommand=self.yscroll.set)
+        self.listRooms = tk.Listbox(frame, height=int(master.winfo_height()/25), yscrollcommand=self.yscroll.set)
         self.listRooms.pack(side=tk.TOP, anchor=tk.N, fill=tk.BOTH, expand=1, pady=(0,10))
         
         tk.Button(frame, text='Quit', command=root.destroy).pack(side=tk.RIGHT, anchor=tk.S, padx=(1,0))
         tk.Button(frame, text='Save').pack(side=tk.RIGHT, anchor=tk.S, padx=(1,0))
-        tk.Button(frame, text='Refresh', command=self.get_zone_list).pack(side=tk.RIGHT, anchor=tk.E, padx=(1,0))
+        tk.Button(frame, text='Refresh', command=self.refresh).pack(side=tk.RIGHT, anchor=tk.E, padx=(1,0))
         
         self.ABS_PATH = __file__.removesuffix('main.py')
-        
-        self.zone_config = zc.zone_config()
         
         self.pack(fill=tk.BOTH, expand=1)
         
         frame.pack(side=tk.TOP, fill=tk.BOTH, padx=10, pady=10, expand=1)
         
         return None
+    
+    
+    def set_list_height(self, passedHeight):
+        # print(passedHeight)
+        self.listRooms.config(height=int(passedHeight/25.5))
+        return 0
    
 
     def select_zone(self):
         self.zone.set('No Zone Selected')
 
-        # dropdown = tk.OptionMenu(self, self.zone, *self.zones, command=self.show_rooms)
-        # dropdown.pack_propagate(False)
-        # dropdown.pack(side=tk.TOP, anchor=tk.N, expand=0)
+        dropdown = tk.OptionMenu(self, self.zone, *self.zones, command=self.show_rooms)
+        dropdown.pack_propagate(False)
+        dropdown.pack(side=tk.TOP, anchor=tk.N, expand=0)
         return 0
 
 
-    def show_clicked(self, event):
-        frame.label.config(text=self.zone.get())
+    def refresh(self):
+        self.get_zone_list(str(self.zone))
         return 0
     
     
@@ -76,19 +82,36 @@ class CheckerBoard(tk.Frame):
     
     
     def show_rooms(self, zone):
+    
+        rawZoneList = self.get_zone_list(zone)
         
         self.listRooms.delete(0, tk.END)
-        self.listRooms.insert(0, *self.get_zone_list(zone))
+        self.listRooms.insert(0, *rawZoneList)
         self.listRooms.pack(side=tk.TOP, fill=tk.X, anchor=tk.N, expand=1)
         self.yscroll.config(command=self.listRooms.yview)
-        pass
+        
+        for item in range(len(rawZoneList)):
+            if 'UNAVAILABLE' in str(self.listRooms.get(item)):
+                self.listRooms.itemconfig(item,{'bg':'#a2a42c'})
+            else:
+                self.listRooms.itemconfig(item,{'bg':'#77160c'})
+        
+        return 0
 
 
 root = tk.Tk()
 root.title('CheckerBoard')
-root.geometry('500x350')
+root.geometry('750x630')
 root.option_add('*Font', 'consolas 12')
-
+root.update_idletasks()
 checkerBoard = CheckerBoard(root)
+
+def onResize(event):
+    root.config(width=event.width, height=event.height)
+    checkerBoard.set_list_height(root.winfo_height())
+    
+root.bind('<Configure>', onResize)
+
+# checkerBoard.bind('<Configure>', onResize)
 
 checkerBoard.mainloop()

@@ -33,7 +33,7 @@ class zone_config():
         for room in self.load_zones.keys():
             if room.split(" ")[0] in zoneList[zoneNum]:
                 available = self.check_availability(self.load_zones[room])
-                string = f'{room:11} | {available}'
+                string = f'{room:8} | {'10/10/1010':10} | {'NEEDS CHECKED':13} | {available:23} | {'COMMENTS'} |'
                 roomList.append(string)
         return roomList
 
@@ -110,8 +110,8 @@ class zone_config():
                 endTime = datetime.strptime(data[1][5:], '%H%M')
                 endDelta = timedelta(hours=endTime.hour, minutes=endTime.minute)
                 
-                if startDelta <= nowDelta <= endDelta:
-                    return f'UNAVAILABLE until {endTime.time()}'
+                if startDelta <= nowDelta < endDelta:
+                    return f'UNAVAILABLE until {str(endTime.time())[:-3]}'
                 
                 elif (timeSlot < len(roomList)-1):
                     nextData = roomList[timeSlot+1]
@@ -120,7 +120,7 @@ class zone_config():
                         nextDelta = timedelta(hours=nextTime.hour, minutes=nextTime.minute)
                     
                         if (nowDelta < nextDelta):
-                            return f'AVAILABLE   until {str(nextDelta)}'
+                            return f'AVAILABLE   until {str(nextDelta)[:-3]}'
                         
     
-        return 'AVAILABLE'
+        return 'AVAILABLE   rest of day'
