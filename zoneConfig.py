@@ -29,13 +29,15 @@ class zone_config():
             'PA FA CB LS AB AC VA',
         ]
         
-        roomList = []
+        roomDict = {}
         for room in self.load_zones.keys():
+            roomDictDict = {}
             if room.split(" ")[0] in zoneList[zoneNum]:
                 available = self.check_availability(self.load_zones[room])
                 string = f'{room:8} | {'10/10/1010':10} | {'NEEDS CHECKED':13} | {available:23} | {'COMMENTS'} |'
-                roomList.append(string)
-        return roomList
+                roomDictDict.update({'Last Checked': '10/10/1010', 'Needs Checked': 'NO', 'Available': str(available), 'Comments': ''})
+                roomDict.update({room: roomDictDict})
+        return roomDict
 
     
     def pull_zones(self):
