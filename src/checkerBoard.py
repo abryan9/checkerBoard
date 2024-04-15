@@ -1,10 +1,10 @@
 import tkinter as tk
-from tkinter import ttk, font
-from datetime import datetime, timedelta
-
-# import time
-
-import zoneConfig as zc
+from tkinter import font
+from datetime import date, datetime, timedelta
+import time
+import pandas as pd
+import os
+import json
 
 class CheckerBoard(tk.Frame):
     def __init__(self, master):
@@ -21,7 +21,7 @@ class CheckerBoard(tk.Frame):
         self.zone.set('No Zone Selected')
         
         self.select_zone()
-        self.zone_config = zc.zone_config()
+        self.zone_config = zone_config()
         
         self.colorPallete = {
             'UW Gold': '#ffc425',
@@ -78,7 +78,6 @@ class CheckerBoard(tk.Frame):
         tk.Button(self.buttons, text='Quit', command=root.destroy).pack(side=tk.RIGHT, anchor=tk.S)
         tk.Button(self.buttons, text='Save').pack(side=tk.RIGHT, anchor=tk.S)
         tk.Button(self.buttons, text='Refresh', command=self.refresh).pack(side=tk.RIGHT, anchor=tk.S)
-        self.ABS_PATH = __file__.removesuffix('main.py')
         
         self.header.pack(side=tk.TOP, fill=tk.X, expand=1, pady=4, padx=4)
         self.boxes.pack(side=tk.TOP, fill=tk.X, expand=0, padx=4)
@@ -123,7 +122,7 @@ class CheckerBoard(tk.Frame):
 
 
     def select_zone(self):
-        self.zone.set('No Zone Selected')
+        # self.zone.set('No Zone Selected')
 
         dropdown = tk.OptionMenu(self.header, self.zone, *self.zones, command=self.show_rooms)
         # dropdown.configure(bg='#cbcccd')
@@ -170,23 +169,28 @@ class CheckerBoard(tk.Frame):
         
         self.yscroll.config(command=self.listRooms.yview)
         
-        for item in rawZoneDict.keys():
-            self.listRooms.insert(tk.END, item)
-            self.listDates.insert(tk.END, rawZoneDict[item]['Last Checked'])
-            
-            self.listNeedsChecked.insert(tk.END, rawZoneDict[item]['Needs Checked'])
-            if rawZoneDict[item]['Needs Checked'] == 'YES':
-                self.listNeedsChecked.itemconfig(tk.END,{'bg':self.colorPallete['UW Gold']})
-            else:
-                self.listNeedsChecked.itemconfig(tk.END,{'bg':self.colorPallete['UW Brown'], 'fg':self.colorPallete['Cool Grey 1']})
+        try:
         
-            self.listAvailable.insert(tk.END, rawZoneDict[item]['Available'])
-            if 'UNAVAILABLE' not in rawZoneDict[item]['Available']:
-                self.listAvailable.itemconfig(tk.END,{'bg':self.colorPallete['Evening Sky'], 'fg':self.colorPallete['Cool Grey 1']})
-            else:
-                self.listAvailable.itemconfig(tk.END,{'bg':self.colorPallete['Indian Paintbrush'], 'fg':self.colorPallete['Cool Grey 1']})
+            for item in rawZoneDict.keys():
+                self.listRooms.insert(tk.END, item)
+                self.listDates.insert(tk.END, rawZoneDict[item]['Last Checked'])
+                
+                self.listNeedsChecked.insert(tk.END, rawZoneDict[item]['Needs Checked'])
+                if rawZoneDict[item]['Needs Checked'] == 'YES':
+                    self.listNeedsChecked.itemconfig(tk.END, {'bg':self.colorPallete['UW Brown'], 'fg':self.colorPallete['Cool Grey 1']})
+                else:
+                    self.listNeedsChecked.itemconfig(tk.END, {'bg':self.colorPallete['UW Gold']})
             
-            self.listComments.insert(tk.END, rawZoneDict[item]['Comments'])
+                self.listAvailable.insert(tk.END, rawZoneDict[item]['Available'])
+                if 'UNAVAILABLE' not in rawZoneDict[item]['Available']:
+                    self.listAvailable.itemconfig(tk.END, {'bg':self.colorPallete['Evening Sky'], 'fg':self.colorPallete['Cool Grey 1']})
+                else:
+                    self.listAvailable.itemconfig(tk.END, {'bg':self.colorPallete['Indian Paintbrush'], 'fg':self.colorPallete['Cool Grey 1']})
+                
+                self.listComments.insert(tk.END, rawZoneDict[item]['Comments'])
+            
+        except:
+            pass
             
         self.listRooms.pack(side=tk.LEFT, expand=0)
         self.listDates.pack(side=tk.LEFT, expand=0)
@@ -195,8 +199,150 @@ class CheckerBoard(tk.Frame):
         self.listComments.pack(side=tk.LEFT, fill=tk.X, expand=1)
         
         return 0
+    
+    
+    def show_full_schedule(self, event):
+        print('Right Mouse Clicked!')
+        pass
 
 
+    def highlight_boxes(self, event):
+        listboxes = [self.listRooms, self.listDates, self.listNeedsChecked, self.listAvailable, self.listComments]
+        storedClick = 0
+        for listbox in listboxes:
+            try:
+                storedClick += listbox.curselection()[0]
+            except:
+                pass
+        
+        self.show_rooms(self.zone.get())
+        
+        for listbox in listboxes:
+            try:
+                listbox.itemconfig(storedClick, {'bg':self.colorPallete['Charcoal'], 'fg':self.colorPallete['Cool Grey 1']})
+            except:
+                pass
+     
+        self.listRooms.pack(side=tk.LEFT, expand=0)
+        self.listDates.pack(side=tk.LEFT, expand=0)
+        self.listNeedsChecked.pack(side=tk.LEFT, expand=0)
+        self.listAvailable.pack(side=tk.LEFT, expand=0)
+        self.listComments.pack(side=tk.LEFT, fill=tk.X, expand=1)
+        return 0
+
+
+class zone_config():
+    
+    allBuildings = '''
+        SI STEM EERB AN BC HS GE ES EIC
+        EN AG EA ED HA HI BU
+        CR PS AS BS NAC RH HO
+        PA FA CB LS AB AC VA
+        '''
+
+    def __init__(self):
+        self.load_zones = self.pull_zones()
+
+
+    def get_zone(self, zoneNum):
+        zoneList = [
+            self.allBuildings,
+            'SI STEM EERB AN BC HS GE ES EIC',
+            'EN AG EA ED HA HI BU',
+            'CR PS AS BS NAC RH HO',
+            'PA FA CB LS AB AC VA',
+        ]
+        
+        roomDict = {}
+        for room in self.load_zones.keys():
+            roomDictDict = {}
+            if room.split(" ")[0] in zoneList[zoneNum]:
+                available = self.check_availability(self.load_zones[room])
+                roomDictDict.update({'Last Checked': '10/10/1010', 'Needs Checked': 'NO', 'Available': str(available), 'Comments': ''})
+                roomDict.update({room: roomDictDict})
+        return roomDict
+
+    
+    def pull_zones(self):
+        roomsDict = {}
+        
+        if os.path.exists(ABS_PATH + 'rooms.json'):
+            config = open(ABS_PATH + 'rooms.json', 'r')
+            roomsDict = json.load(config)
+            
+        else:
+            roomsDict = self.generate_config()
+    
+        return roomsDict
+    
+
+    def generate_config(self):
+        data = (ABS_PATH + 'roomConfig.csv')
+        loadedData = pd.read_csv(data, names=['Rooms', 'Times', 'Contact', 'Empty'], engine='pyarrow', header=None)
+        roomFile = open(ABS_PATH + 'rooms.json', 'w')
+        
+        rows, columns = loadedData.shape
+        
+        roomDict = {}
+        currentRoom = 'AB 103'
+        tempList = []
+        roomFile.write('{\n')
+        for row in range(rows):
+            search = loadedData.loc[row, 'Rooms']
+            if type(search) == str and search.split(" ")[0] in self.allBuildings:
+                if currentRoom != search:
+                    roomFile.write(f'"{currentRoom}"' + ': ' + str(tempList).replace("'", '"') + ',\n')
+                    currentRoom = search
+                    tempList = []
+    
+            elif type(search) == str and search[0].isdigit():
+                toAdd = loadedData.loc[row, 'Times'].split(', ')
+                if len(toAdd) > 1:
+                    toAdd = toAdd[1].split(' ')[:-2]
+                    ' '.join(toAdd)
+                    tempList.append(toAdd)
+                else:
+                    tempList.append('')
+                    
+        roomFile.write(f'"{currentRoom}"' + ': ' + str(tempList).replace("'", '"') + '\n}')
+        
+        
+        roomDict = json.load(roomFile)
+        
+        roomFile.close()
+        
+        return roomDict
+        
+        
+    def check_availability(self, roomList):
+        now = datetime.now()
+        nowDelta = timedelta(hours=now.hour, minutes=now.minute)
+        dayOfWeek = now.strftime('%A')
+        
+        if dayOfWeek == 'Thursday':
+            dayOfWeek = 'R'
+        else:
+            dayOfWeek = dayOfWeek[0]
+            
+        for timeSlot in range(len(roomList)):
+            data = roomList[timeSlot]
+            if len(data) > 1 and dayOfWeek in data[0]:
+                startTime = datetime.strptime(data[1][:4], '%H%M')
+                startDelta = timedelta(hours=startTime.hour, minutes=startTime.minute)
+                
+                endTime = datetime.strptime(data[1][5:], '%H%M')
+                endDelta = timedelta(hours=endTime.hour, minutes=endTime.minute)
+                
+                if startDelta <= nowDelta < endDelta:
+                    return f'UNAVAILABLE until {str(endTime.time())[:-3]}'
+                 
+                elif (nowDelta < startDelta):
+                    return f'AVAILABLE   until {str(startDelta)[:-3]}'
+    
+        return 'AVAILABLE   rest of day'
+
+
+ABS_PATH = __file__.removesuffix('checkerBoard.py')
 root = tk.Tk()
 root.title('UWIT Checkerboard')
 root.geometry('750x630')
@@ -210,5 +356,7 @@ def onResize(event):
     checkerBoard.set_list_size(root.winfo_height(), root.winfo_height())
     
 root.bind('<Configure>', onResize)
+root.bind('<Button-1>', checkerBoard.highlight_boxes)
+root.bind('<Button-3>', checkerBoard.show_full_schedule)
 
 checkerBoard.mainloop()

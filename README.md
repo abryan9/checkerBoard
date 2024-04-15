@@ -8,4 +8,11 @@ Accomplishing this is dependant upon having ready access to the current tracking
 ## Known Issues ##
 * Resizing the window is very clunky
 * No LSM integration
-* Room availability might have an off-by-one bug
+
+## Install instructions ##
+### Windows ###
+To install on Windows, simply run the install.py file by double clicking on it or executing it in Command Prompt
+
+### Linux ###
+Currently, there is no readily available distribution for Unix devices, but the app can still be downloaded and run 
+by executing the checkerBoard.py file in checkerBoard/src
