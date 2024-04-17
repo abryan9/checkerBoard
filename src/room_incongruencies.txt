@@ -1,0 +1,217 @@
+Room Discrepencies between the most recently published 25Live data dump and the Teams Room Check list
+
+[-] -> Not in 25Live, in Teams
+[+] -> Not in Teams, in 25Live
+[!] -> No classes listed this semester in 25Live
+[*] -> Have not had a room check logged into LSM this semester
+
+AB:
++ 202    *
++ 402  ! *
+
+AC:
++ 100    *
+
+AG:
++ 2031 ! *
++ 22   ! 
+- 240    *
+- 3028   
+- 3039 ! * // Not Listed in LSM
+- 3030   *
++ 316  ! *
++ 4022   *
++ 4027 ! *
++ 5028 ! *
++ 6014   *
+
+AN:
+
+AS:
++ 118  ! *
++ 139    *
++ 328  ! * // Not Listed in LSM
++ 401  
++ AUD    * // Not Listed in LSM
+
+AV:
+- 212    
+
+BC:
++ 320  ! *
+- 217    
+
+BOM:
+- 217  ! * // Not Listed in LSM
+
+BE:
+- 205    * // Not Listed in LSM
+
+BS:
++ 214  ! * // Not Listed in LSM
++ 304    * // Not Listed in LSM
++ 312  ! * // Not Listed in LSM
+
+BU:
++ 259    
+- 262C ! 
+
+CB:
++ 104    
++ 104A 
+- 107    
++ 127    * // Not Listed in LSM
+
+CIC:
+- 3    ! *
+
+CL:
+- 216  ! *
+- 506  ! 
+
+CR:
++ 121    *
++ 123    *
++ 125    *
+
+EA:
++ 306  ! * // Not Listed in LSM
+
+ED:
++ 117    *
++ 26   ! *
++ 4      *
+- 52   ! *
++ AUD    *
+
+EERB:
+- 207  ! *
+- 258    *
+- 301    *
+- 329    *
+- 350    *
+
+EN:
+- 1070 ! *
++ 2045 ! * // Not Listed in LSM
+- 2064 ! *
++ 2101   
++ 2104   
++ 3044   *
++ 4045   *
+- 4023 ! *
++ 4054 ! *
++ 4059   *
++ 4086 ! * // Not Listed in LSM
++ 5030   *
++ 5038 ! *
++ 6028   * // Not Listed in LSM
+- B105   *
+
+ESB:
+- 1004   *
+
+FA:
++ 111    *
++ 118  ! * // Not Listed in LSM
++ 120  ! * // Not Listed in LSM
++ 128  ! * // Not Listed in LSM
++ 240  ! * // Not Listed in LSM
++ 254  ! * // Not Listed in LSM
++ CS   ! * // Not Listed in LSM
++ MS   ! * // Not Listed in LSM
++ STTH ! * // Not Listed in LSM
++ TH   ! * // Not Listed in LSM
+
+GE:
++ 209    *
++ 211  
++ 213  
++ 311G 
++ 316A ! 
+
+GH:
+- 106  
+- 210  ! 
+
+HA:
+- 119  
+
+HI:
+- 57   
+- 60   ! 
+
+HO:
+- 463  ! 
++ 427  ! 
++ 459  ! 
+
+LS:
++ 170  
++ 178  
++ 180  
++ 182  
++ 186  
++ 191  
+
+NAC:
+
+PA:
++ CNCT 
++ 1019 ! 
+- 1016 
+- 1070 
+- 1077 
+- 1090 
+- 1131 
+- 1138 
+- 1152 
+- 2003 
+- 2102 ! 
+- 2140 
+- 3058 
+
+PS:
++ 133  ! 
++ 135  ! 
+- 231  
++ 6    ! 
++ 8    ! 
+
+RH:
+- 29   ! 
++ 109  
++ 135  
++ 144  ! 
++ 241  ! 
++ 408  ! 
++ 423  ! 
+- 427  ! 
++ 461  ! 
++ 50A  ! 
+
+SI:
+- 1001 ! 
+- 2222 ! 
+- 2240 ! 
+- 3027 ! 
+- 3030 ! 
+- 3222 ! 
+- 3240 ! 
+- 4222 ! 
+- 4240 ! 
+
+STEM:
++ 145  
++ 160  
++ 175  
++ 180  
++ 185  
++ 195  
++ 317  ! 
++ 339  ! 
+
+VA:
+- 109  
+
+ 
