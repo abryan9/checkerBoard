@@ -1,4 +1,4 @@
-Room Discrepencies between the most recently published 25Live data dump and the Teams Room Check list
+Room Discrepencies between the most recently published 25Live data dump and the Teams Room Check list posted by Curtis
 
 [-] -> Not in 25Live, in Teams
 [+] -> Not in Teams, in 25Live
@@ -125,93 +125,93 @@ FA:
 
 GE:
 + 209    *
-+ 211  
-+ 213  
-+ 311G 
-+ 316A ! 
++ 211    *
++ 213    *
++ 311G   * 
++ 316A ! *
 
 GH:
-- 106  
-- 210  ! 
+- 106    *
+- 210  ! *
 
 HA:
-- 119  
+- 119    *
 
 HI:
-- 57   
+- 57     *
 - 60   ! 
 
 HO:
-- 463  ! 
-+ 427  ! 
-+ 459  ! 
+- 463  ! * // Not Listed in LSM
++ 427  ! * // Not Listed in LSM
++ 459  ! * // Not Listed in LSM
 
 LS:
-+ 170  
-+ 178  
-+ 180  
-+ 182  
-+ 186  
-+ 191  
++ 170    
++ 178    
++ 180    
++ 182    
++ 186    
++ 191    
 
 NAC:
 
 PA:
-+ CNCT 
-+ 1019 ! 
-- 1016 
-- 1070 
++ CNCT   * // Not Listed in LSM
++ 1019 ! * // Not Listed in LSM
+- 1016   
+- 1070   
 - 1077 
-- 1090 
-- 1131 
+- 1090   *
+- 1131   
 - 1138 
-- 1152 
-- 2003 
-- 2102 ! 
-- 2140 
+- 1152   *
+- 2003   
+- 2102 ! *
+- 2140   
 - 3058 
 
 PS:
-+ 133  ! 
-+ 135  ! 
++ 133  ! * // Not Listed in LSM
++ 135  ! * // Not Listed in LSM
 - 231  
-+ 6    ! 
-+ 8    ! 
++ 6    ! * // Not Listed in LSM
++ 8    ! * // Not Listed in LSM
 
 RH:
-- 29   ! 
-+ 109  
-+ 135  
-+ 144  ! 
-+ 241  ! 
-+ 408  ! 
-+ 423  ! 
-- 427  ! 
-+ 461  ! 
-+ 50A  ! 
+- 29   ! *
++ 109    * // Not Listed in LSM
++ 135    * // Not Listed in LSM
++ 144  ! * // Not Listed in LSM
++ 241  ! * // Not Listed in LSM
++ 408  ! *
++ 423  ! *
+- 427  ! *
++ 461  ! * // Not Listed in LSM
++ 50A  ! * // Not Listed in LSM
 
 SI:
-- 1001 ! 
-- 2222 ! 
-- 2240 ! 
-- 3027 ! 
-- 3030 ! 
-- 3222 ! 
-- 3240 ! 
-- 4222 ! 
-- 4240 ! 
+- 1001 ! *
+- 2222 ! *
+- 2240 ! *
+- 3027 ! *
+- 3030 ! *
+- 3222 ! *
+- 3240 ! *
+- 4222 ! *
+- 4240 ! *
 
 STEM:
-+ 145  
++ 145    
 + 160  
 + 175  
 + 180  
 + 185  
 + 195  
-+ 317  ! 
-+ 339  ! 
++ 317  ! *
++ 339  ! *
 
 VA:
-- 109  
+- 109    *
 
  

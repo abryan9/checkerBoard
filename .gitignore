@@ -3,3 +3,4 @@
 *.swo
 *.json
 __pycache__/
+*.xlsx

@@ -9,7 +9,7 @@ if not fso.FileExists(sShortcut) then
 	oLink.TargetPath = "C:\UWApps\checkerBoard\src\run.vbs"
 	oLink.WindowStyle = 1
 	oLink.Hotkey = "Ctrl+Alt+f"
-	oLink.IconLocation = "C:\UWApps\checkerBoard\dist\install\UW_Signature_stacked_brown_cropped.ico, 0"
+	oLink.IconLocation = "C:\UWApps\checkerBoard\dist\install\UW_Signature_stacked_brown2.ico, 0"
 	oLink.Description = "UWIT CheckerBoard"
 	' oLink.WorkingDirectory = sDesktop
 	' oLink.Arguments = WScript.Arguments(0)

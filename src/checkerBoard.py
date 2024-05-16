@@ -85,8 +85,6 @@ class CheckerBoard(tk.Frame):
         
         self.frame.pack(fill=tk.BOTH, expand=1)
         
-        
-        
         return None
     
     
@@ -118,6 +116,7 @@ class CheckerBoard(tk.Frame):
         self.listNeedsChecked.configure(height=int(newHeight/19.04)-offset)
         self.listAvailable.configure(height=int(newHeight/19.04)-offset)
         self.listComments.configure(height=int(newHeight/19.04)-offset, width=int(newWidth/19.04))
+        
         return 0
 
 
@@ -128,11 +127,13 @@ class CheckerBoard(tk.Frame):
         # dropdown.configure(bg='#cbcccd')
         dropdown.pack_propagate(False)
         dropdown.pack(side=tk.TOP)
+        
         return 0
 
 
     def refresh(self):
         self.get_zone_dict(str(self.zone))
+        
         return 0
     
     
@@ -152,6 +153,7 @@ class CheckerBoard(tk.Frame):
                 zoneNum = 0
             else:
                 zoneNum = int(zone[-1])
+            
             return self.zone_config.get_zone(zoneNum)
         else:
             return ['']
@@ -228,6 +230,7 @@ class CheckerBoard(tk.Frame):
         self.listNeedsChecked.pack(side=tk.LEFT, expand=0)
         self.listAvailable.pack(side=tk.LEFT, expand=0)
         self.listComments.pack(side=tk.LEFT, fill=tk.X, expand=1)
+        
         return 0
 
 
@@ -260,14 +263,15 @@ class zone_config():
                 available = self.check_availability(self.load_zones[room])
                 roomDictDict.update({'Last Checked': '10/10/1010', 'Needs Checked': 'NO', 'Available': str(available), 'Comments': ''})
                 roomDict.update({room: roomDictDict})
+            
         return roomDict
 
     
     def pull_zones(self):
         roomsDict = {}
         
-        if os.path.exists(ABS_PATH + 'rooms.json'):
-            config = open(ABS_PATH + 'rooms.json', 'r')
+        if os.path.exists(ABS_PATH + 'roomSchedule.json'):
+            config = open(ABS_PATH + 'roomSchedule.json', 'r')
             roomsDict = json.load(config)
             
         else:
@@ -277,26 +281,37 @@ class zone_config():
     
 
     def generate_config(self):
-        data = (ABS_PATH + 'roomConfig.csv')
-        loadedData = pd.read_csv(data, names=['Rooms', 'Times', 'Contact', 'Empty'], engine='pyarrow', header=None)
-        roomFile = open(ABS_PATH + 'rooms.json', 'w')
+        scheduleDatapath = (ABS_PATH + 'roomConfig.csv')
+        scheduleData = pd.read_csv(scheduleDatapath, names=['Rooms', 'Times', 'Contact', 'Empty'], engine='pyarrow', header=None)
+        scheduleFile = open(ABS_PATH + 'roomSchedule.json', 'w')
+
+        checksDatapath = (ABS_PATH + 'roomChecks.csv')
+        checksData = pd.read_csv(
+            checksDatapath, 
+            names=[
+                'Location', 'Type', 'Status', 'Is Master', 'Tag', 'Assignee', 'Started On', 
+                'Completed On', 'Completed By', 'LSRS (Part B) Score', 'LSRS Score', 'Room Inspection'
+            ],
+            engine='pyarrow',
+            header=None
+        )
+        checksFile = open(ABS_PATH + 'roomSchecks.json', 'w')
         
-        rows, columns = loadedData.shape
-        
-        roomDict = {}
+        scheduleRows, scheduleColumns = scheduleData.shape
+
         currentRoom = 'AB 103'
         tempList = []
-        roomFile.write('{\n')
-        for row in range(rows):
-            search = loadedData.loc[row, 'Rooms']
+        scheduleFile.write('{\n')
+        for row in range(scheduleRows):
+            search = scheduleData.loc[row, 'Rooms']
             if type(search) == str and search.split(" ")[0] in self.allBuildings:
                 if currentRoom != search:
-                    roomFile.write(f'"{currentRoom}"' + ': ' + str(tempList).replace("'", '"') + ',\n')
+                    scheduleFile.write(f'"{currentRoom}"' + ': ' + str(tempList).replace("'", '"') + ',\n')
                     currentRoom = search
                     tempList = []
     
             elif type(search) == str and search[0].isdigit():
-                toAdd = loadedData.loc[row, 'Times'].split(', ')
+                toAdd = scheduleData.loc[row, 'Times'].split(', ')
                 if len(toAdd) > 1:
                     toAdd = toAdd[1].split(' ')[:-2]
                     ' '.join(toAdd)
@@ -304,16 +319,16 @@ class zone_config():
                 else:
                     tempList.append('')
                     
-        roomFile.write(f'"{currentRoom}"' + ': ' + str(tempList).replace("'", '"') + '\n}')
+        scheduleFile.write(f'"{currentRoom}"' + ': ' + str(tempList).replace("'", '"') + '\n}')
         
         
-        roomDict = json.load(roomFile)
+        scheduleDict = json.load(scheduleFile)
         
-        roomFile.close()
+        scheduleFile.close()
         
-        return roomDict
-        
-        
+        return scheduleDict
+    
+    
     def check_availability(self, roomList):
         now = datetime.now()
         nowDelta = timedelta(hours=now.hour, minutes=now.minute)
@@ -342,21 +357,69 @@ class zone_config():
         return 'AVAILABLE   rest of day'
 
 
-ABS_PATH = __file__.removesuffix('checkerBoard.py')
-root = tk.Tk()
-root.title('UWIT Checkerboard')
-root.geometry('750x630')
-root.option_add('*Font', 'courier 12')
-root.config(bg='#cbcccd')
-root.update_idletasks()
-checkerBoard = CheckerBoard(root)
+def reload():
+    pass
+
+
+def toggle_needs_checked():
+    pass
+
+
+def toggle_available():
+    pass
+
+
+def about():
+    pass
+
+
+def freq_asked():
+    pass
+
+
+def report_issue():
+    pass
+
 
 def onResize(event):
     root.config(height=event.height, width=event.width)
     checkerBoard.set_list_size(root.winfo_height(), root.winfo_height())
+
+    
+ABS_PATH = __file__.removesuffix('checkerBoard.py')
+root = tk.Tk()
+menu = tk.Menu(root)
+
+root.title('UWIT Checkerboard')
+root.geometry('750x630')
+root.option_add('*Font', 'courier 12')
+root.config(bg='#cbcccd', menu=menu)
+
+checkerBoard = CheckerBoard(root)
+
+optionsMenu = tk.Menu(menu, font=('courier 9'), tearoff=False)
+menu.add_cascade(label='Options', menu=optionsMenu)
+optionsMenu.add_command(label='Reload', command=reload)
+hideRecentlyChecked = tk.BooleanVar()
+optionsMenu.add_checkbutton(
+    label='Hide Recently Checked', command=toggle_needs_checked, variable=hideRecentlyChecked
+)
+hideUnavailable = tk.BooleanVar()
+optionsMenu.add_checkbutton(
+    label='Hide Unavailable', command=toggle_available, variable=hideUnavailable
+)
+optionsMenu.add_separator()
+optionsMenu.add_command(label='Quit', command=root.destroy)
+
+helpMenu = tk.Menu(menu, font=('courier 9'), tearoff=False)
+menu.add_cascade(label='Help', menu=helpMenu)
+helpMenu.add_command(label='About', command=about)
+helpMenu.add_command(label='FAQ', command=freq_asked)
+helpMenu.add_command(label='Report Issue', command=report_issue)
     
 root.bind('<Configure>', onResize)
 root.bind('<Button-1>', checkerBoard.highlight_boxes)
 root.bind('<Button-3>', checkerBoard.show_full_schedule)
 
+root.update_idletasks()
 checkerBoard.mainloop()
